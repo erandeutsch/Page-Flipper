@@ -216,9 +216,14 @@ if __name__ == "__main__":
     cv2.imwrite('res.png', img)
     open_file('res.png')
    
+    cv2.imwrite('res.png', img)
+    open_file('res.png')
+    Songdata=open("Song data.txt",'w')
     for note_group in note_groups:
         for note in note_group:
+            Songdata.write(note.note+"\n")
             print(note.note)
+    Songdata.close()
     #print(note_groups)
     #Note_groups contains all the not_group which contain all the notes in a group(line)
     midi = MIDIFile(1)
