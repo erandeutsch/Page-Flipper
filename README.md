@@ -3,7 +3,7 @@ A python application that automatically flips a score page according to the musi
 
 This repository contains 4 programs: SheetVision, ListenNote.py, Music comparasion.py, and Prototype.py.
 
-SheetVision is a program from GitHub that reads Sheet Music and converts it into Midi files. It has been modified to also output a list of notes into the terminal. This program requires a .jpg file as its input. To run the program, download the files and run the program with one of the two .jpg files as an argument. The two .jpg files are the first and second pages of the test music scores. After running the program, the notes outputted in the terminal must be copied into SongData.txt, that can be found in the main directory. You can run the program on any .jpg file using the following terminal command:        
+SheetVision is a program from GitHub that reads Sheet Music and converts it into Midi files. It has been modified to also output a list of notes into the terminal. This program requires a .jpg file as its input. To run the program, download the files and run the program with one of the two .jpg files as an argument. The two .jpg files are the first and second pages of the test music scores. After running the program, the notes outputted are printed into SongData.txt. You can run the program on any .jpg file using the following terminal command:        
 py main.py Any_File.jpg
 
 
