@@ -1,0 +1,7 @@
+PyAudio
+aubio
+opencv-python
+subprocess
+random
+numpy
+time
