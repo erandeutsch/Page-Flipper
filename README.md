@@ -1,6 +1,8 @@
 # Page-Flipper
 A python application that automatically flips a score page according to the music being played
 
+Before running requirments.txt, portaudio needs to be installed. The instructions for installation can be found at https://people.csail.mit.edu/hubert/pyaudio/
+
 Install with pip install -r requirements.txt
 
 This repository contains 4 programs: SheetVision, ListenNote.py, Music comparasion.py, and Prototype.py.
