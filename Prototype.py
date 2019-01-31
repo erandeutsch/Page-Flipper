@@ -31,7 +31,7 @@ note_defs = {
 }
 
 notes = note_defs.items()
-location=0
+location=[0]
 
 # Compares the note given with the notes in the song. Returns the location of the note
 def findnote(note, songdata, location):
@@ -55,38 +55,30 @@ def open_file(path):
     cmd = {'linux':'eog', 'win32':'explorer', 'darwin':'open'}[sys.platform]
     subprocess.run([cmd, path])
 
-# Tried to wrap process_frame with another function to channel the location variable. Did not work.
-def process_frame_maker(location):
     # define pyaudio callback
-    def process_frame(data, frame_count, time_info, status_flag):
-        signal = np.frombuffer(data, dtype=np.float32)
-        new_note = notes_o(signal)
-        if (new_note[0] != 0):
-            note=aubio.midi2note(int(new_note[0]))
-            if(len(note)==2):
-                note=note
-            else:
-                note=note[0]+note[2]
-            Musicdata=open("Music data.txt","a")
-            #Musicdata.write(note+"\n")
-            print(note)
-            Musicdata.close()
-            # Run the findnote function in order to find the location of the given note. 
-            findnoteResults=findnote(note, songData,locationObject)
-            locationObject=findnoteResults[1]
-            print(findnoteResults[0])
-            print(locationObject)
-            print(note)
-            locationObject+=1
-            # When the location reaches the end of the page, the second page is opened.
-            if locationObject==355:
-                open_file("2PageTest-1.jpg")
-        return (data , pyaudio.paContinue)
-    print(location)
-    global locationObject
-    locationObject=location
-    # I tried creating a global variable, but the process_frame function does not see it.
-    return process_frame
+def process_frame(data, frame_count, time_info, status_flag, loc):
+    signal = np.frombuffer(data, dtype=np.float32)
+    new_note = notes_o(signal)
+    if (new_note[0] != 0):
+        note=aubio.midi2note(int(new_note[0]))
+        if(len(note)==2):
+            note=note
+        else:
+            note=note[0]+note[2]
+        Musicdata=open("Music data.txt","a")
+        #Musicdata.write(note+"\n")
+        print(note)
+        Musicdata.close()
+
+        findnoteResults=findnote(note, songData,loc[0])
+        loc[0]=findnoteResults[1]
+        print(findnoteResults[0])
+        print(loc[0])
+        print(note)
+        loc[0]+=1
+        if loc[0]==355:
+            print("PAGE FLIP")
+    return (data , pyaudio.paContinue)
     
 
 # initialise pyaudio
@@ -101,7 +93,7 @@ stream = p.open(format=pyaudio.paFloat32,
                 rate=samplerate,
                 input=True,
                 frames_per_buffer=buffer_size,
-                stream_callback=process_frame_maker(location)
+                stream_callback=lambda a,b,c,d: process_frame(a,b,c,d,location)
                 )
 
 # setup pitch
@@ -121,7 +113,7 @@ songData1=song.readlines()
 songData=[]
 for note in songData1:
     songData.append(note.rstrip())
-open_file("2PageTest-0.jpg")
+print("OPEN FIRST PAGE")
 while stream.is_active() and not input():
     time.sleep(0.001)
 
