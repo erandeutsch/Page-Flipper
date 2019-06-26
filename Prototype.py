@@ -31,9 +31,13 @@ note_defs = {
 }
 
 notes = note_defs.items()
-location=[0]
 
-# Compares the note given with the notes in the song. Returns the location of the note
+song=open("Song data.txt","rU")
+songData1=song.readlines()
+songData=[]
+for note in songData1:
+    songData.append(note.rstrip())
+
 def findnote(note, songdata, location):
     if note==songdata[location]:
         return ["Exact match",location]
@@ -55,7 +59,7 @@ def open_file(path):
     cmd = {'linux':'eog', 'win32':'explorer', 'darwin':'open'}[sys.platform]
     subprocess.run([cmd, path])
 
-    # define pyaudio callback
+# define pyaudio callback
 def process_frame(data, frame_count, time_info, status_flag, loc):
     signal = np.frombuffer(data, dtype=np.float32)
     new_note = notes_o(signal)
@@ -76,10 +80,15 @@ def process_frame(data, frame_count, time_info, status_flag, loc):
         print(loc[0])
         print(note)
         loc[0]+=1
-        if loc[0]==355:
-            print("PAGE FLIP")
+        if loc[0]==289:#355:
+            open_file("2PageTest2-1.jpg")
     return (data , pyaudio.paContinue)
+# print(location)
+# global locationObject
+# locationObject=location
+# return process_frame
     
+location = [0]
 
 # initialise pyaudio
 p = pyaudio.PyAudio()
@@ -100,20 +109,15 @@ stream = p.open(format=pyaudio.paFloat32,
 win_s = 2048 # fft size
 hop_s = buffer_size # hop size=buffer_size
 notes_o = aubio.notes("default", win_s, hop_s, samplerate)
-#The avaliable methods are those for onset detection: energy, hfc (default), complex, phase, wphase, specdiff, kl, mkl,specflux
-# The notes output is a vector of length 3 containing: the midi note value, or 0 if no note was found, the note velocity, the midi note to turn off
-notes_o.set_silence(-40)           #set notes detection silence threshold, in dB (default: -70)
-notes_o.set_minioi_ms(10)         # set notes detection minimum inter-onset interval, in millisecond. The shortest interval between two consecutive onsets (default: 30ms?)
-#notes_o.set_release_drop       set notes detection release drop level, in dB. If the level drops more than this amount since the last note started, the note will be turned off (default: 10).
+
+notes_o.set_silence(-40)           
+notes_o.set_minioi_ms(10)         
+
 # start pyaudio stream
 stream.start_stream()
 
-song=open("Song data.txt","rU")
-songData1=song.readlines()
-songData=[]
-for note in songData1:
-    songData.append(note.rstrip())
-print("OPEN FIRST PAGE")
+
+open_file("2PageTest2-0.jpg")
 while stream.is_active() and not input():
     time.sleep(0.001)
 
