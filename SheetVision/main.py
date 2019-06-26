@@ -7,7 +7,7 @@ from best_fit import fit
 from rectangle import Rectangle
 from note import Note
 from random import randint
-from MidiFile3 import MIDIFile
+from midiutil.MidiFile3 import MIDIFile
 
 staff_files = [
     "resources/template/staff2.png", 
@@ -216,14 +216,9 @@ if __name__ == "__main__":
     cv2.imwrite('res.png', img)
     open_file('res.png')
    
-    cv2.imwrite('res.png', img)
-    open_file('res.png')
-    Songdata=open("Song data.txt",'w')
     for note_group in note_groups:
         for note in note_group:
-            Songdata.write(note.note+"\n")
             print(note.note)
-    Songdata.close()
     #print(note_groups)
     #Note_groups contains all the not_group which contain all the notes in a group(line)
     midi = MIDIFile(1)
@@ -241,11 +236,11 @@ if __name__ == "__main__":
         for note in note_group:
             note_type = note.sym
             if note_type == "1":
-                duration = 8#4
+                duration = 4
             elif note_type == "2":
-                duration = 4#2
+                duration = 2
             elif note_type == "4,8":
-                duration = 2#1 if len(note_group) == 1 else 0.5
+                duration = 1
             pitch = note.pitch
             midi.addNote(track,channel,pitch,time,duration,volume)
             time += duration
