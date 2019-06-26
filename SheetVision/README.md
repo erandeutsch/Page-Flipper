@@ -1,3 +1,5 @@
+Sheet Vision was taken from https://github.com/cal-pratt/SheetVision with several edits
+
 ## Sheet Vision
 
 Sheet Vision is a python program which reads sheet music and turns it into midi files.
